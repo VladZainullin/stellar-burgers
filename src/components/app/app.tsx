@@ -1,4 +1,4 @@
-import { ConstructorPage } from '@pages';
+import { Feed } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
 
@@ -9,6 +9,7 @@ import ingredientsSlice, {
   getIngredientsThunk
 } from '../../services/slices/ingredients';
 import { useDispatch, useSelector } from '../../services/store';
+import { Route, Routes } from 'react-router-dom';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -34,7 +35,9 @@ const App = () => {
           {error.message}
         </div>
       ) : ingredients.length > 0 ? (
-        <ConstructorPage />
+        <Routes>
+          <Route path='/feed' element={<Feed />} />
+        </Routes>
       ) : (
         <div className={`${styles.title} text text_type_main-medium pt-4`}>
           Нет игредиентов
