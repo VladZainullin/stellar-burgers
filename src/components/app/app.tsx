@@ -1,4 +1,4 @@
-import { Feed } from '@pages';
+import { Feed, NotFound404 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
 
@@ -37,6 +37,7 @@ const App = () => {
       ) : ingredients.length > 0 ? (
         <Routes>
           <Route path='/feed' element={<Feed />} />
+          <Route path='*' element={<NotFound404 />} />
         </Routes>
       ) : (
         <div className={`${styles.title} text text_type_main-medium pt-4`}>
