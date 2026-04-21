@@ -9,12 +9,14 @@ import ingredientsSlice from './slices/ingredients';
 import feedsSlice from './slices/feeds';
 import userOrdersSlice from './slices/userOrders';
 import userCurrentOrderSlice from './slices/userCurrentOrder';
+import userSlice from './slices/user';
 
 const rootReducer = combineSlices(
   ingredientsSlice,
   feedsSlice,
   userOrdersSlice,
-  userCurrentOrderSlice
+  userCurrentOrderSlice,
+  userSlice
 );
 
 const store = configureStore({
