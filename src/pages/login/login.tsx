@@ -2,7 +2,8 @@ import { FC, SyntheticEvent, useState } from 'react';
 import { LoginUI } from '@ui-pages';
 import { loginThunk } from '../../services/slices/user';
 import { useDispatch } from '../../services/store';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { NavigateOptions, useLocation, useNavigate } from 'react-router-dom';
+import { TLoginData } from '@api';
 
 export const Login: FC = () => {
   const dispatch = useDispatch();
@@ -19,8 +20,17 @@ export const Login: FC = () => {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    dispatch(loginThunk({ email, password })).then((_) => {
-      navigate(from, { replace: true });
+    const loginData: TLoginData = {
+      email: email,
+      password: password
+    };
+
+    dispatch(loginThunk(loginData)).then((_) => {
+      const navigateOptions: NavigateOptions = {
+        replace: true
+      };
+
+      navigate(from, navigateOptions);
     });
   };
 
