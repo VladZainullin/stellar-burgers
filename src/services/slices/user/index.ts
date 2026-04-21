@@ -176,12 +176,14 @@ const userSlice = createSlice({
       state.getUserLoading = false;
       state.getUserError = null;
       state.user = action.payload;
+      state.isAuthenticatedChecked = true;
     });
     builder.addCase(getUserThunk.rejected, (state, action) => {
       state.getUserLoading = false;
       state.getUserError = action.meta.rejectedWithValue
         ? (action.payload as SerializedError)
         : action.error;
+      state.isAuthenticatedChecked = true;
     });
 
     builder.addCase(updateUserThunk.pending, (state) => {
