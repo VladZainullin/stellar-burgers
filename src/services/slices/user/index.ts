@@ -106,7 +106,8 @@ const userSlice = createSlice({
   reducers: {},
   selectors: {
     getName: (state) => state.user?.name,
-    getEmail: (state) => state.user?.email
+    getEmail: (state) => state.user?.email,
+    getIsAuthenticated: (state) => state.user !== null
   },
   extraReducers: (builder) => {
     builder.addCase(loginThunk.pending, (state) => {
