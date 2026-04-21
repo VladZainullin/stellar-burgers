@@ -1,4 +1,4 @@
-import { Feed, NotFound404 } from '@pages';
+import { Feed, Login, NotFound404 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
 
@@ -10,12 +10,15 @@ import ingredientsSlice, {
 } from '../../services/slices/ingredients';
 import { useDispatch, useSelector } from '../../services/store';
 import { Route, Routes } from 'react-router-dom';
+import { ProtectedRoute } from '../protected-route/protected-route';
+import { getUserThunk } from '../../services/slices/user';
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getIngredientsThunk());
+    dispatch(getUserThunk());
   }, [dispatch]);
 
   /** TODO: взять переменные из стора */
@@ -41,6 +44,14 @@ const App = () => {
           <Route
             path='ingredients/:ingredientId'
             element={<IngredientDetails />}
+          />
+          <Route
+            path='/login'
+            element={
+              <ProtectedRoute onlyUnAuth>
+                <Login />
+              </ProtectedRoute>
+            }
           />
           <Route path='*' element={<NotFound404 />} />
         </Routes>
