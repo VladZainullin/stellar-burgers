@@ -3,6 +3,7 @@ import {
   ForgotPassword,
   Login,
   NotFound404,
+  Profile,
   Register,
   ResetPassword
 } from '@pages';
@@ -16,12 +17,14 @@ import ingredientsSlice, {
   getIngredientsThunk
 } from '../../services/slices/ingredients';
 import { useDispatch, useSelector } from '../../services/store';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { getUserThunk } from '../../services/slices/user';
 
 const App = () => {
   const dispatch = useDispatch();
+
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(getIngredientsThunk());
@@ -45,7 +48,7 @@ const App = () => {
           {error.message}
         </div>
       ) : ingredients.length > 0 ? (
-        <Routes>
+        <Routes location={location}>
           <Route path='/feed' element={<Feed />} />
           <Route path='/feed/:orderNumber' element={<OrderInfo />} />
           <Route
@@ -81,6 +84,14 @@ const App = () => {
             element={
               <ProtectedRoute onlyUnAuth>
                 <ResetPassword />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/profile'
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />
