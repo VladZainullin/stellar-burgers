@@ -12,6 +12,11 @@
 .menu_part_left {
   display: flex;
   flex-basis: 35%;
+  gap: 40px;
+}
+
+.nav-link {
+  text-decoration: none;
 }
 
 .link {
