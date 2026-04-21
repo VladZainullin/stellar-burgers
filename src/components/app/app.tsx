@@ -2,7 +2,7 @@ import { Feed, NotFound404 } from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
 
-import { AppHeader, OrderInfo } from '@components';
+import { AppHeader, IngredientDetails, OrderInfo } from '@components';
 import { Preloader } from '@ui';
 import { useEffect } from 'react';
 import ingredientsSlice, {
@@ -38,6 +38,10 @@ const App = () => {
         <Routes>
           <Route path='/feed' element={<Feed />} />
           <Route path='/feed/:orderNumber' element={<OrderInfo />} />
+          <Route
+            path='ingredients/:ingredientId'
+            element={<IngredientDetails />}
+          />
           <Route path='*' element={<NotFound404 />} />
         </Routes>
       ) : (
