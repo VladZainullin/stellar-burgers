@@ -2,6 +2,7 @@ import { TUser } from '@utils-types';
 import { SerializedError } from '@reduxjs/toolkit';
 
 export interface IUserState {
+  isAuthenticatedChecked: boolean;
   user: TUser | null;
   loginLoading: boolean;
   loginError: SerializedError | null;

@@ -18,6 +18,7 @@ import { deleteCookie, setCookie } from '../../../utils/cookie';
 
 const initialState: IUserState = {
   user: null,
+  isAuthenticatedChecked: false,
   loginLoading: false,
   loginError: null,
   registerLoading: false,
@@ -107,7 +108,8 @@ const userSlice = createSlice({
   selectors: {
     getName: (state) => state.user?.name,
     getEmail: (state) => state.user?.email,
-    getIsAuthenticated: (state) => state.user !== null
+    getIsAuthenticated: (state) => state.user !== null,
+    getIsAuthenticatedChecked: (state) => state.isAuthenticatedChecked
   },
   extraReducers: (builder) => {
     builder.addCase(loginThunk.pending, (state) => {
@@ -118,6 +120,7 @@ const userSlice = createSlice({
       state.loginLoading = false;
       state.loginError = null;
       state.user = action.payload;
+      state.isAuthenticatedChecked = true;
     });
     builder.addCase(loginThunk.rejected, (state, action) => {
       state.loginLoading = false;
@@ -125,6 +128,7 @@ const userSlice = createSlice({
         ? (action.payload as SerializedError)
         : action.error;
       state.user = null;
+      state.isAuthenticatedChecked = true;
     });
 
     builder.addCase(registerThunk.pending, (state) => {
@@ -135,6 +139,7 @@ const userSlice = createSlice({
       state.registerLoading = false;
       state.registerError = null;
       state.user = action.payload;
+      state.isAuthenticatedChecked = true;
     });
     builder.addCase(registerThunk.rejected, (state, action) => {
       state.registerLoading = false;
@@ -142,6 +147,7 @@ const userSlice = createSlice({
         ? (action.payload as SerializedError)
         : action.error;
       state.user = null;
+      state.isAuthenticatedChecked = true;
     });
 
     builder.addCase(logoutThunk.pending, (state) => {
@@ -152,12 +158,14 @@ const userSlice = createSlice({
       state.logoutLoading = false;
       state.logoutError = null;
       state.user = null;
+      state.isAuthenticatedChecked = false;
     });
     builder.addCase(logoutThunk.rejected, (state, action) => {
       state.logoutLoading = false;
       state.logoutError = action.meta.rejectedWithValue
         ? (action.payload as SerializedError)
         : action.error;
+      state.isAuthenticatedChecked = false;
     });
 
     builder.addCase(getUserThunk.pending, (state) => {
