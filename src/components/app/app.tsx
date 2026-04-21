@@ -1,4 +1,11 @@
-import { Feed, ForgotPassword, Login, NotFound404, Register } from '@pages';
+import {
+  Feed,
+  ForgotPassword,
+  Login,
+  NotFound404,
+  Register,
+  ResetPassword
+} from '@pages';
 import '../../index.css';
 import styles from './app.module.css';
 
@@ -66,6 +73,14 @@ const App = () => {
             element={
               <ProtectedRoute onlyUnAuth>
                 <ForgotPassword />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/reset-password'
+            element={
+              <ProtectedRoute onlyUnAuth>
+                <ResetPassword />
               </ProtectedRoute>
             }
           />
