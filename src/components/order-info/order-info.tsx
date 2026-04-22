@@ -5,9 +5,7 @@ import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
 import ingredientsSlice from '../../services/slices/ingredients';
 import { useParams } from 'react-router-dom';
-import userCurrentOrderSlice, {
-  getOrderThunk
-} from '../../services/slices/userCurrentOrder';
+import feedsSlice, { getOrderThunk } from '../../services/slices/feeds';
 
 export const OrderInfo: FC = () => {
   const dispatch = useDispatch();
@@ -18,7 +16,7 @@ export const OrderInfo: FC = () => {
     dispatch(getOrderThunk(number));
   }, [dispatch, number]);
 
-  const orderData = useSelector(userCurrentOrderSlice.selectors.getOrder);
+  const orderData = useSelector(feedsSlice.selectors.getCurrentOrder);
 
   const ingredients: TIngredient[] = useSelector(
     ingredientsSlice.selectors.getIngredients

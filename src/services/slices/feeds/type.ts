@@ -3,8 +3,11 @@ import { SerializedError } from '@reduxjs/toolkit';
 
 export interface IFeedState {
   orders: TOrder[];
+  currentOrder: TOrder | null;
   total: number;
   totalToday: number;
-  loading: boolean;
-  error: SerializedError | null;
+  getOrdersLoading: boolean;
+  getOrdersError: SerializedError | null;
+  getOrderLoading: boolean;
+  getOrderError: SerializedError | null;
 }
