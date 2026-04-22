@@ -4,6 +4,7 @@ import {
   Login,
   NotFound404,
   Profile,
+  ProfileOrders,
   Register,
   ResetPassword
 } from '@pages';
@@ -92,6 +93,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/profile/orders'
+            element={
+              <ProtectedRoute>
+                <ProfileOrders />
               </ProtectedRoute>
             }
           />
