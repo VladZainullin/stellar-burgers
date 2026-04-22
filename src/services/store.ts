@@ -10,13 +10,15 @@ import feedsSlice from './slices/feeds';
 import userOrdersSlice from './slices/userOrders';
 import userCurrentOrderSlice from './slices/userCurrentOrder';
 import userSlice from './slices/user';
+import constructorSlice from './slices/constructor';
 
 const rootReducer = combineSlices(
   ingredientsSlice,
   feedsSlice,
   userOrdersSlice,
   userCurrentOrderSlice,
-  userSlice
+  userSlice,
+  constructorSlice
 );
 
 const store = configureStore({
