@@ -20,22 +20,10 @@ export const OrderInfo: FC = () => {
 
   const orderData = useSelector(userCurrentOrderSlice.selectors.getOrder);
 
-  /** TODO: взять переменные orderData и ingredients из стора */
-  // const orderData = {
-  //   createdAt: '',
-  //   ingredients: [],
-  //   _id: '',
-  //   status: '',
-  //   name: '',
-  //   updatedAt: 'string',
-  //   number: 0
-  // };
-
   const ingredients: TIngredient[] = useSelector(
     ingredientsSlice.selectors.getIngredients
   );
 
-  /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
