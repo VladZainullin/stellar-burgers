@@ -1,7 +1,7 @@
 import { IConstructorState } from './type';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
-import { randomUUID } from 'node:crypto';
+import { v4 } from 'uuid';
 
 const initialState: IConstructorState = {
   bun: null,
@@ -20,7 +20,7 @@ const constructorSlice = createSlice({
     add(state, action: PayloadAction<TIngredient>) {
       if (action.payload.type === 'bun') return;
 
-      action.payload._id = randomUUID();
+      action.payload._id = v4();
       state.ingredients.push(action.payload);
     },
     remove(state, action: PayloadAction<TIngredient>) {
