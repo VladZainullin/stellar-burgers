@@ -7,7 +7,6 @@ import {
 } from 'react-redux';
 import ingredientsSlice from './slices/ingredients';
 import feedsSlice from './slices/feeds';
-import userOrdersSlice from './slices/userOrders';
 import userCurrentOrderSlice from './slices/userCurrentOrder';
 import userSlice from './slices/user';
 import constructorSlice from './slices/constructor';
@@ -15,7 +14,6 @@ import constructorSlice from './slices/constructor';
 const rootReducer = combineSlices(
   ingredientsSlice,
   feedsSlice,
-  userOrdersSlice,
   userCurrentOrderSlice,
   userSlice,
   constructorSlice

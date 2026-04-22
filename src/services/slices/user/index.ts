@@ -5,6 +5,7 @@ import {
   SerializedError
 } from '@reduxjs/toolkit';
 import {
+  getOrdersApi,
   getUserApi,
   loginUserApi,
   logoutApi,
@@ -18,7 +19,10 @@ import { deleteCookie, setCookie } from '../../../utils/cookie';
 
 const initialState: IUserState = {
   user: null,
+  orders: [],
   isAuthenticatedChecked: false,
+  getOrdersLoading: false,
+  getOrdersError: null,
   loginLoading: false,
   loginError: null,
   registerLoading: false,
@@ -30,6 +34,11 @@ const initialState: IUserState = {
   updateUserLoading: false,
   updateUserError: null
 };
+
+const getUserOrdersThunk = createAsyncThunk(
+  'orders/getOrders',
+  async () => await getOrdersApi()
+);
 
 const loginThunk = createAsyncThunk<TUser, TLoginData>(
   'user/login',
@@ -108,10 +117,25 @@ const userSlice = createSlice({
   selectors: {
     getName: (state) => state.user?.name,
     getEmail: (state) => state.user?.email,
+    getOrders: (state) => state.orders,
     getIsAuthenticated: (state) => state.user !== null,
     getIsAuthenticatedChecked: (state) => state.isAuthenticatedChecked
   },
   extraReducers: (builder) => {
+    builder.addCase(getUserOrdersThunk.pending, (state) => {
+      state.getOrdersLoading = true;
+      state.getOrdersError = null;
+    });
+    builder.addCase(getUserOrdersThunk.fulfilled, (state, action) => {
+      state.getOrdersLoading = false;
+      state.getOrdersError = null;
+      state.orders = action.payload;
+    });
+    builder.addCase(getUserOrdersThunk.rejected, (state, action) => {
+      state.getOrdersLoading = false;
+      state.getOrdersError = action.error;
+    });
+
     builder.addCase(loginThunk.pending, (state) => {
       state.loginLoading = true;
       state.loginError = null;
@@ -205,6 +229,7 @@ const userSlice = createSlice({
 });
 
 export {
+  getUserOrdersThunk,
   loginThunk,
   registerThunk,
   logoutThunk,
