@@ -19,6 +19,9 @@ const ingredientsSlice = createSlice({
   reducers: {},
   selectors: {
     getIngredients: (state) => state.ingredients,
+    getBuns: (state) => state.ingredients.filter((i) => i.type === 'bun'),
+    getMains: (state) => state.ingredients.filter((i) => i.type === 'main'),
+    getSauces: (state) => state.ingredients.filter((i) => i.type == 'sauce'),
     getError: (state) => state.error,
     getLoading: (state) => state.loading
   },
