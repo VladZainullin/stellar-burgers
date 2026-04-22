@@ -1,4 +1,5 @@
 import {
+  ConstructorPage,
   Feed,
   ForgotPassword,
   Login,
@@ -112,6 +113,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path='/' element={<ConstructorPage />} />
           <Route path='*' element={<NotFound404 />} />
         </Routes>
       ) : (
