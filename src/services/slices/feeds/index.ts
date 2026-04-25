@@ -30,7 +30,11 @@ const getOrderThunk = createAsyncThunk<TOrder, number>(
 const feedsSlice = createSlice({
   name: 'feeds',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    removeCurrentOrder(state) {
+      state.currentOrder = null;
+    }
+  },
   selectors: {
     getOrders: (state) => state.orders,
     getCurrentOrder: (state) => state.currentOrder,
