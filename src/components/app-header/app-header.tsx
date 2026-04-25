@@ -4,7 +4,7 @@ import { useSelector } from '../../services/store';
 import userSlice from '../../services/slices/user';
 
 export const AppHeader: FC = () => {
-  const userName = useSelector(userSlice.selectors.getName);
+  const user = useSelector(userSlice.selectors.getUser);
 
-  return <AppHeaderUI userName={userName} />;
+  return <AppHeaderUI userName={user.name} />;
 };

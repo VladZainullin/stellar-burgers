@@ -18,7 +18,10 @@ import { TUser } from '@utils-types';
 import { deleteCookie, setCookie } from '../../../utils/cookie';
 
 const initialState: IUserState = {
-  user: null,
+  user: {
+    name: '',
+    email: ''
+  },
   orders: [],
   isAuthenticatedChecked: false,
   getOrdersLoading: false,
@@ -115,10 +118,10 @@ const userSlice = createSlice({
   initialState: initialState,
   reducers: {},
   selectors: {
-    getName: (state) => state.user?.name,
-    getEmail: (state) => state.user?.email,
+    getUser: (state) => state.user,
     getOrders: (state) => state.orders,
-    getIsAuthenticated: (state) => state.user !== null,
+    getIsAuthenticated: (state) =>
+      state.user.name !== '' && state.user.email !== '',
     getIsAuthenticatedChecked: (state) => state.isAuthenticatedChecked
   },
   extraReducers: (builder) => {
@@ -151,7 +154,10 @@ const userSlice = createSlice({
       state.loginError = action.meta.rejectedWithValue
         ? (action.payload as SerializedError)
         : action.error;
-      state.user = null;
+      state.user = {
+        name: '',
+        email: ''
+      };
       state.isAuthenticatedChecked = true;
     });
 
@@ -170,7 +176,10 @@ const userSlice = createSlice({
       state.registerError = action.meta.rejectedWithValue
         ? (action.payload as SerializedError)
         : action.error;
-      state.user = null;
+      state.user = {
+        name: '',
+        email: ''
+      };
       state.isAuthenticatedChecked = true;
     });
 
@@ -181,7 +190,10 @@ const userSlice = createSlice({
     builder.addCase(logoutThunk.fulfilled, (state) => {
       state.logoutLoading = false;
       state.logoutError = null;
-      state.user = null;
+      state.user = {
+        name: '',
+        email: ''
+      };
       state.isAuthenticatedChecked = false;
     });
     builder.addCase(logoutThunk.rejected, (state, action) => {

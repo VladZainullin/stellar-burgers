@@ -6,10 +6,7 @@ import userSlice, { updateUserThunk } from '../../services/slices/user';
 export const Profile: FC = () => {
   const dispatch = useDispatch();
 
-  const user = {
-    name: useSelector(userSlice.selectors.getName)!,
-    email: useSelector(userSlice.selectors.getEmail)!
-  };
+  const user = useSelector(userSlice.selectors.getUser);
 
   const [formValue, setFormValue] = useState({
     name: user.name,

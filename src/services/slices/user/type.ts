@@ -3,7 +3,7 @@ import { SerializedError } from '@reduxjs/toolkit';
 
 export interface IUserState {
   isAuthenticatedChecked: boolean;
-  user: TUser | null;
+  user: TUser;
   orders: TOrder[];
   getOrdersLoading: boolean;
   getOrdersError: SerializedError | null;
