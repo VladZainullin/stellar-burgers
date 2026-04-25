@@ -1,6 +1,6 @@
 import { IConstructorState } from './type';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TIngredient } from '@utils-types';
+import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { v4 } from 'uuid';
 
 const initialState: IConstructorState = {
@@ -17,13 +17,13 @@ const constructorSlice = createSlice({
 
       state.bun = action.payload;
     },
-    add(state, action: PayloadAction<TIngredient>) {
+    add(state, action: PayloadAction<TConstructorIngredient>) {
       if (action.payload.type === 'bun') return;
 
       action.payload._id = v4();
       state.ingredients.push(action.payload);
     },
-    remove(state, action: PayloadAction<TIngredient>) {
+    remove(state, action: PayloadAction<TConstructorIngredient>) {
       state.ingredients.splice(state.ingredients.indexOf(action.payload), 1);
     },
     reset(state) {
