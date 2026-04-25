@@ -1,6 +1,6 @@
 import { TConstructorIngredient, TIngredient } from '@utils-types';
 
-export interface IConstructorState {
+export interface IBurgerState {
   bun: TIngredient | null;
   ingredients: TConstructorIngredient[];
 }
