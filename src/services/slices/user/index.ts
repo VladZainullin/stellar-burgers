@@ -194,7 +194,7 @@ const userSlice = createSlice({
         name: '',
         email: ''
       };
-      state.isAuthenticatedChecked = false;
+      //state.isAuthenticatedChecked = false;
     });
     builder.addCase(logoutThunk.rejected, (state, action) => {
       state.logoutLoading = false;
