@@ -1,6 +1,6 @@
 import { IFeedState } from './type';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getFeedsApi, getOrderByNumberApi } from '@api';
+import { getFeedsApi, getOrderByNumberApi, orderBurgerApi } from '@api';
 import { TOrder } from '@utils-types';
 
 const initialState: IFeedState = {
@@ -11,7 +11,9 @@ const initialState: IFeedState = {
   getOrdersLoading: false,
   getOrdersError: null,
   getOrderLoading: false,
-  getOrderError: null
+  getOrderError: null,
+  createOrderLoading: false,
+  createOrderError: null
 };
 
 const getFeedsThunk = createAsyncThunk(
@@ -27,6 +29,22 @@ const getOrderThunk = createAsyncThunk<TOrder, number>(
   }
 );
 
+const createOrderThunk = createAsyncThunk<
+  {
+    order: TOrder;
+    name: string;
+  },
+  string[]
+>('orders/create', async (data, { rejectWithValue }) => {
+  const response = await orderBurgerApi(data);
+
+  if (!response?.success) {
+    return rejectWithValue(response);
+  }
+
+  return { order: response.order, name: response.name };
+});
+
 const feedsSlice = createSlice({
   name: 'feeds',
   initialState: initialState,
@@ -41,7 +59,9 @@ const feedsSlice = createSlice({
     getTotal: (state) => state.total,
     getTotalToday: (state) => state.totalToday,
     getOrdersLoading: (state) => state.getOrdersLoading,
-    getOrdersError: (state) => state.getOrdersError
+    getOrdersError: (state) => state.getOrdersError,
+    createOrderLoading: (state) => state.createOrderLoading,
+    createOrderError: (state) => state.createOrderError
   },
   extraReducers: (builder) => {
     builder.addCase(getFeedsThunk.pending, (state) => {
@@ -73,8 +93,22 @@ const feedsSlice = createSlice({
       state.getOrderLoading = false;
       state.getOrderError = action.error;
     });
+
+    builder.addCase(createOrderThunk.pending, (state) => {
+      state.createOrderLoading = true;
+      state.createOrderError = null;
+    });
+    builder.addCase(createOrderThunk.fulfilled, (state, action) => {
+      state.createOrderLoading = false;
+      state.createOrderError = null;
+      state.currentOrder = action.payload.order;
+    });
+    builder.addCase(createOrderThunk.rejected, (state) => {
+      state.createOrderLoading = false;
+      state.createOrderError = null;
+    });
   }
 });
 
-export { getFeedsThunk, getOrderThunk };
+export { getFeedsThunk, getOrderThunk, createOrderThunk };
 export default feedsSlice;

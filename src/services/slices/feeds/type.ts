@@ -10,4 +10,6 @@ export interface IFeedState {
   getOrdersError: SerializedError | null;
   getOrderLoading: boolean;
   getOrderError: SerializedError | null;
+  createOrderLoading: boolean;
+  createOrderError: SerializedError | null;
 }
