@@ -22,10 +22,7 @@ const ingredientsSlice = createSlice({
   initialState: initialState,
   reducers: {},
   selectors: {
-    getIngredients: createSelector(
-      [(state: IIngredientsState) => state.ingredients],
-      (i) => i
-    ),
+    getIngredients: (state: IIngredientsState) => state.ingredients,
     getBuns: createSelector(
       (state: IIngredientsState) => state.ingredients,
       (ingredients) => ingredients.filter((i) => i.type === 'bun')
