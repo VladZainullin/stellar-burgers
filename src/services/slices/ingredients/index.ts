@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice
+} from '@reduxjs/toolkit';
 import { IIngredientsState } from './type';
 import { getIngredientsApi } from '@api';
 
@@ -18,10 +22,22 @@ const ingredientsSlice = createSlice({
   initialState: initialState,
   reducers: {},
   selectors: {
-    getIngredients: (state) => state.ingredients,
-    getBuns: (state) => state.ingredients.filter((i) => i.type === 'bun'),
-    getMains: (state) => state.ingredients.filter((i) => i.type === 'main'),
-    getSauces: (state) => state.ingredients.filter((i) => i.type == 'sauce'),
+    getIngredients: createSelector(
+      [(state: IIngredientsState) => state.ingredients],
+      (i) => i
+    ),
+    getBuns: createSelector(
+      (state: IIngredientsState) => state.ingredients,
+      (ingredients) => ingredients.filter((i) => i.type === 'bun')
+    ),
+    getMains: createSelector(
+      (state: IIngredientsState) => state.ingredients,
+      (ingredients) => ingredients.filter((i) => i.type === 'main')
+    ),
+    getSauces: createSelector(
+      (state: IIngredientsState) => state.ingredients,
+      (ingredients) => ingredients.filter((i) => i.type === 'sauce')
+    ),
     getError: (state) => state.error,
     getLoading: (state) => state.loading
   },
