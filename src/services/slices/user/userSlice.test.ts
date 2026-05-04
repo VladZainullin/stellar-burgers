@@ -1,5 +1,5 @@
-import { TRegisterData } from '@api';
-import userSlice, { initialState, registerThunk } from './index';
+import { TLoginData, TRegisterData } from '@api';
+import userSlice, { initialState, loginThunk, registerThunk } from './index';
 import { TUser } from '@utils-types';
 
 const registerDataMock: TRegisterData = {
@@ -11,6 +11,11 @@ const registerDataMock: TRegisterData = {
 const userMock: TUser = {
   email: 'user@yandex.ru',
   name: 'user'
+};
+
+const loginDataMock: TLoginData = {
+  email: 'user@yandex.ru',
+  password: 'user'
 };
 
 describe('Тесты слайса пользователя', () => {
@@ -47,11 +52,7 @@ describe('Тесты слайса пользователя', () => {
     test('В состоянии <Rejected>', () => {
       // Arrange
       const error = new Error('Тестовая ошибка');
-      const action = registerThunk.rejected(
-        error,
-        'rejected',
-        registerDataMock
-      );
+      const action = registerThunk.rejected(error, '', registerDataMock);
 
       // Act
       const state = userSlice.reducer(initialState, action);
@@ -59,6 +60,50 @@ describe('Тесты слайса пользователя', () => {
       // Assert
       expect(state.registerLoading).toBe(false);
       expect(state.registerError?.message).toEqual(error.message);
+    });
+  });
+
+  describe('Тестирование логина пользователя', () => {
+    test('В состоянии <Pending>', () => {
+      // Arrange
+      const action = loginThunk.pending('', loginDataMock);
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.loginLoading).toBe(true);
+      expect(state.loginError).toBeNull();
+      expect(state.user).toEqual({
+        name: '',
+        email: ''
+      });
+    });
+
+    test('В состоянии <Fullfilled>', () => {
+      // Arrange
+      const action = loginThunk.fulfilled(userMock, '', loginDataMock);
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.loginLoading).toBe(false);
+      expect(state.loginError).toBeNull();
+      expect(state.user).toEqual(userMock);
+    });
+
+    test('В состоянии <Rejected>', () => {
+      // Arrange
+      const error = new Error('Тестовая ошибка');
+      const action = loginThunk.rejected(error, '', loginDataMock);
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.loginLoading).toBe(false);
+      expect(state.loginError?.message).toEqual(error.message);
     });
   });
 });
