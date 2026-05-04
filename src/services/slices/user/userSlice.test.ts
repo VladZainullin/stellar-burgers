@@ -26,7 +26,7 @@ const loginDataMock: TLoginData = {
   password: 'user'
 };
 
-describe('Тесты слайса пользователя', () => {
+describe('Тестирование слайса пользователя', () => {
   describe('Тестирование асинхронной регистрации пользователя', () => {
     test('В состоянии <Pending>', () => {
       // Arrange
