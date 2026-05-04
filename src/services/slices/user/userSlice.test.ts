@@ -71,7 +71,7 @@ describe('Тесты слайса пользователя', () => {
     });
   });
 
-  describe('Тестирование входа пользователя', () => {
+  describe('Тестирование асинхронного входа пользователя', () => {
     test('В состоянии <Pending>', () => {
       // Arrange
       const action = loginThunk.pending('', loginDataMock);
@@ -115,7 +115,7 @@ describe('Тесты слайса пользователя', () => {
     });
   });
 
-  describe('Тестирование выхода пользователя', () => {
+  describe('Тестирование асинхронного выхода пользователя', () => {
     test('В состоянии <Pending>', () => {
       // Arrange
       const action = logoutThunk.pending('');
