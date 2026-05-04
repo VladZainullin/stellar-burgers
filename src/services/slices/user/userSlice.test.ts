@@ -5,7 +5,8 @@ import userSlice, {
   initialState,
   loginThunk,
   logoutThunk,
-  registerThunk
+  registerThunk,
+  updateUserThunk
 } from './index';
 import { TOrder, TUser } from '@utils-types';
 
@@ -257,6 +258,48 @@ describe('Тесты слайса пользователя', () => {
       expect(state.getOrdersLoading).toBe(false);
       expect(state.getOrdersError?.message).toEqual(error.message);
       expect(state.orders).toHaveLength(0);
+    });
+  });
+
+  describe('Тестирование асинхронного обновления пользователя', () => {
+    test('В состоянии <Pending>', () => {
+      // Arrange
+      const action = updateUserThunk.pending('', userMock);
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.updateUserLoading).toBe(true);
+      expect(state.updateUserError).toBeNull();
+      expect(state.user).toEqual(initialState.user);
+    });
+
+    test('В состоянии <Fullfilled>', () => {
+      // Arrange
+      const action = updateUserThunk.fulfilled(userMock, '', userMock);
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.updateUserLoading).toBe(false);
+      expect(state.updateUserError).toBeNull();
+      expect(state.user).toEqual(userMock);
+    });
+
+    test('В состоянии <Rejected>', () => {
+      // Arrange
+      const error = new Error('Тестовая ошибка');
+      const action = updateUserThunk.rejected(error, '', initialState.user);
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.updateUserLoading).toBe(false);
+      expect(state.updateUserError?.message).toEqual(error.message);
+      expect(state.user).toEqual(initialState.user);
     });
   });
 });
