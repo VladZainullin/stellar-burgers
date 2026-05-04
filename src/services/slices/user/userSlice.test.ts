@@ -1,5 +1,10 @@
 import { TLoginData, TRegisterData } from '@api';
-import userSlice, { initialState, loginThunk, registerThunk } from './index';
+import userSlice, {
+  initialState,
+  loginThunk,
+  logoutThunk,
+  registerThunk
+} from './index';
 import { TUser } from '@utils-types';
 
 const registerDataMock: TRegisterData = {
@@ -63,7 +68,7 @@ describe('Тесты слайса пользователя', () => {
     });
   });
 
-  describe('Тестирование логина пользователя', () => {
+  describe('Тестирование входа пользователя', () => {
     test('В состоянии <Pending>', () => {
       // Arrange
       const action = loginThunk.pending('', loginDataMock);
@@ -104,6 +109,50 @@ describe('Тесты слайса пользователя', () => {
       // Assert
       expect(state.loginLoading).toBe(false);
       expect(state.loginError?.message).toEqual(error.message);
+    });
+  });
+
+  describe('Тестирование выхода пользователя', () => {
+    test('В состоянии <Pending>', () => {
+      // Arrange
+      const action = logoutThunk.pending('');
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.logoutLoading).toBe(true);
+      expect(state.logoutError).toBeNull();
+      expect(state.user).toEqual({
+        name: '',
+        email: ''
+      });
+    });
+
+    test('В состоянии <Fullfilled>', () => {
+      // Arrange
+      const action = logoutThunk.fulfilled(undefined, '');
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.logoutLoading).toBe(false);
+      expect(state.logoutError).toBeNull();
+      expect(state.user).toEqual(initialState.user);
+    });
+
+    test('В состоянии <Rejected>', () => {
+      // Arrange
+      const error = new Error('Тестовая ошибка');
+      const action = logoutThunk.rejected(error, '');
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.logoutLoading).toBe(false);
+      expect(state.logoutError?.message).toEqual(error.message);
     });
   });
 });
