@@ -55,5 +55,6 @@ const ingredientsSlice = createSlice({
   }
 });
 
+export { initialState };
 export { getIngredientsThunk };
 export default ingredientsSlice;
