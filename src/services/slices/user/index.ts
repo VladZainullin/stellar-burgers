@@ -240,6 +240,7 @@ const userSlice = createSlice({
   }
 });
 
+export { initialState };
 export {
   getUserOrdersThunk,
   loginThunk,
