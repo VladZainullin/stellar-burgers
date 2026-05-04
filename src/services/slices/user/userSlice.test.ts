@@ -1,11 +1,13 @@
 import { TLoginData, TRegisterData } from '@api';
 import userSlice, {
+  getUserThunk,
   initialState,
   loginThunk,
   logoutThunk,
   registerThunk
 } from './index';
 import { TUser } from '@utils-types';
+import User from './index';
 
 const registerDataMock: TRegisterData = {
   email: 'user',
@@ -153,6 +155,50 @@ describe('Тесты слайса пользователя', () => {
       // Assert
       expect(state.logoutLoading).toBe(false);
       expect(state.logoutError?.message).toEqual(error.message);
+    });
+  });
+
+  describe('Тестирование асинхронного получения пользователя', () => {
+    test('В состоянии <Pending>', () => {
+      // Arrange
+      const action = getUserThunk.pending('');
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.getUserLoading).toBe(true);
+      expect(state.getUserError).toBeNull();
+      expect(state.user).toEqual({
+        name: '',
+        email: ''
+      });
+    });
+
+    test('В состоянии <Fullfilled>', () => {
+      // Arrange
+      const action = getUserThunk.fulfilled(userMock, '');
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.getUserLoading).toBe(false);
+      expect(state.getUserError).toBeNull();
+      expect(state.user).toEqual(userMock);
+    });
+
+    test('В состоянии <Rejected>', () => {
+      // Arrange
+      const error = new Error('Тестовая ошибка');
+      const action = getUserThunk.rejected(error, '');
+
+      // Act
+      const state = userSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.getUserLoading).toBe(false);
+      expect(state.getUserError?.message).toEqual(error.message);
     });
   });
 });
