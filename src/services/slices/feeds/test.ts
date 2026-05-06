@@ -1,4 +1,8 @@
-import feedsSlice, { getFeedsThunk, getOrderThunk } from './index';
+import feedsSlice, {
+  createOrderThunk,
+  getFeedsThunk,
+  getOrderThunk
+} from './index';
 import { initialState } from './index';
 import { TFeedsResponse } from '@api';
 
@@ -17,6 +21,11 @@ const ordersDataMock: TFeedsResponse = {
   ],
   total: 1,
   totalToday: 1
+};
+
+const testOrder = {
+  order: ordersDataMock.orders[0],
+  name: 'Тестовый татарский заказ'
 };
 
 describe('Тестирование слайса ленты заказов', () => {
@@ -111,6 +120,55 @@ describe('Тестирование слайса ленты заказов', () =
       expect(state.currentOrder).toBeNull();
       expect(state.getOrderLoading).toBeFalsy();
       expect(state.getOrderError?.message).toEqual(error.message);
+    });
+  });
+
+  describe('Тестирование асинхронного создания заказа', () => {
+    test('В состоянии <Pending>', () => {
+      // Arrange
+      const action = createOrderThunk.pending(
+        '',
+        ordersDataMock.orders[0].ingredients
+      );
+
+      // Act
+      const state = feedsSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.currentOrder).toBeNull();
+      expect(state.createOrderLoading).toBeTruthy();
+      expect(state.createOrderError).toBeNull();
+    });
+
+    test('В состоянии <Fullfilled>', () => {
+      // Arrange
+      const action = createOrderThunk.fulfilled(
+        testOrder,
+        '',
+        ordersDataMock.orders[0].ingredients
+      );
+
+      // Act
+      const state = feedsSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.currentOrder).toEqual(ordersDataMock.orders[0]);
+      expect(state.createOrderLoading).toBeFalsy();
+      expect(state.createOrderError).toBeNull();
+    });
+
+    test('В состоянии <Rejected>', () => {
+      // Arrange
+      const error = new Error('Тестовая ошибка');
+      const action = createOrderThunk.rejected(error, '', []);
+
+      // Act
+      const state = feedsSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.currentOrder).toBeNull();
+      expect(state.createOrderLoading).toBeFalsy();
+      expect(state.createOrderError?.message).toEqual(error.message);
     });
   });
 });
