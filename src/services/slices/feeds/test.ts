@@ -1,4 +1,4 @@
-import feedsSlice, { getFeedsThunk } from './index';
+import feedsSlice, { getFeedsThunk, getOrderThunk } from './index';
 import { initialState } from './index';
 import { TFeedsResponse } from '@api';
 
@@ -65,6 +65,52 @@ describe('Тестирование слайса ленты заказов', () =
       expect(state.totalToday).toBe(0);
       expect(state.getOrdersLoading).toBeFalsy();
       expect(state.getOrdersError?.message).toEqual(error.message);
+    });
+  });
+
+  describe('Тестирование асинхронного получения заказа по номеру', () => {
+    test('В состоянии <Pending>', () => {
+      // Arrange
+      const action = getOrderThunk.pending('', ordersDataMock.orders[0].number);
+
+      // Act
+      const state = feedsSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.currentOrder).toBeNull();
+      expect(state.getOrderLoading).toBeTruthy();
+      expect(state.getOrderError).toBeNull();
+    });
+
+    test('В состоянии <Fullfilled>', () => {
+      // Arrange
+      const action = getOrderThunk.fulfilled(
+        ordersDataMock.orders[0],
+        '',
+        ordersDataMock.orders[0].number
+      );
+
+      // Act
+      const state = feedsSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.currentOrder).toEqual(ordersDataMock.orders[0]);
+      expect(state.getOrderLoading).toBeFalsy();
+      expect(state.getOrderError).toBeNull();
+    });
+
+    test('В состоянии <Rejected>', () => {
+      // Arrange
+      const error = new Error('Тестовая ошибка');
+      const action = getOrderThunk.rejected(error, '', 1);
+
+      // Act
+      const state = feedsSlice.reducer(initialState, action);
+
+      // Assert
+      expect(state.currentOrder).toBeNull();
+      expect(state.getOrderLoading).toBeFalsy();
+      expect(state.getOrderError?.message).toEqual(error.message);
     });
   });
 });
