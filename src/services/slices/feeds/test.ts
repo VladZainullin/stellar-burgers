@@ -5,6 +5,7 @@ import feedsSlice, {
 } from './index';
 import { initialState } from './index';
 import { TFeedsResponse } from '@api';
+import { IFeedState } from './type';
 
 const ordersDataMock: TFeedsResponse = {
   success: true,
@@ -170,5 +171,28 @@ describe('Тестирование слайса ленты заказов', () =
       expect(state.createOrderLoading).toBeFalsy();
       expect(state.createOrderError?.message).toEqual(error.message);
     });
+  });
+
+  test('Тестирование сброса текущего заказа', () => {
+    // Arrange
+    const initialStateWithOrder: IFeedState = {
+      orders: [],
+      total: 0,
+      totalToday: 0,
+      createOrderError: null,
+      createOrderLoading: false,
+      currentOrder: ordersDataMock.orders[0],
+      getOrderError: null,
+      getOrderLoading: false,
+      getOrdersError: null,
+      getOrdersLoading: false
+    };
+    const action = feedsSlice.actions.removeCurrentOrder();
+
+    // Act
+    const state = feedsSlice.reducer(initialStateWithOrder, action);
+
+    // Assert
+    expect(state.currentOrder).toBeNull();
   });
 });
