@@ -103,9 +103,9 @@ const feedsSlice = createSlice({
       state.createOrderError = null;
       state.currentOrder = action.payload.order;
     });
-    builder.addCase(createOrderThunk.rejected, (state) => {
+    builder.addCase(createOrderThunk.rejected, (state, action) => {
       state.createOrderLoading = false;
-      state.createOrderError = null;
+      state.createOrderError = action.error;
     });
   }
 });
