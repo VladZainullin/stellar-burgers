@@ -47,4 +47,5 @@ const burgerSlice = createSlice({
   selectors: {}
 });
 
+export { initialState };
 export default burgerSlice;
