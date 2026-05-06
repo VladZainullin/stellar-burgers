@@ -110,5 +110,6 @@ const feedsSlice = createSlice({
   }
 });
 
+export { initialState };
 export { getFeedsThunk, getOrderThunk, createOrderThunk };
 export default feedsSlice;
