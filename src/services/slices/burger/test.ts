@@ -141,4 +141,66 @@ describe('Тестирование слайса конструктора бур�
     expect(state.bun).toBeNull();
     expect(state.ingredients).toHaveLength(0);
   });
+
+  test('Тестирование изменения порядка ингредиентов в бургере', () => {
+    // Arrange
+    const initialStateWithIngredients: IBurgerState = {
+      bun: {
+        _id: '844a6105c3D7580216fa083c',
+        name: 'Татарская булка',
+        type: 'main',
+        proteins: 10,
+        fat: 40,
+        carbohydrates: 50,
+        calories: 900,
+        price: 230,
+        image: 'https://code.s3.yandex.net/react/code/bun-01.png',
+        image_mobile: 'https://code.s3.yandex.net/react/code/bun-01-mobile.png',
+        image_large: 'https://code.s3.yandex.net/react/code/bun-01-large.png'
+      },
+      ingredients: [
+        {
+          id: '844a6105c3D7580216fa083c',
+          _id: '844a6105c3D7580216fa083c',
+          name: 'Татарская начинка',
+          type: 'main',
+          proteins: 10,
+          fat: 40,
+          carbohydrates: 50,
+          calories: 900,
+          price: 230,
+          image: 'https://code.s3.yandex.net/react/code/bun-01.png',
+          image_mobile:
+            'https://code.s3.yandex.net/react/code/bun-01-mobile.png',
+          image_large: 'https://code.s3.yandex.net/react/code/bun-01-large.png'
+        },
+        {
+          id: '846a6105c3D7580216fa083c',
+          _id: '834a6105c3D7580216fa083c',
+          name: 'Татарский соус',
+          type: 'sauce',
+          proteins: 10,
+          fat: 40,
+          carbohydrates: 50,
+          calories: 900,
+          price: 230,
+          image: 'https://code.s3.yandex.net/react/code/bun-01.png',
+          image_mobile:
+            'https://code.s3.yandex.net/react/code/bun-01-mobile.png',
+          image_large: 'https://code.s3.yandex.net/react/code/bun-01-large.png'
+        }
+      ]
+    };
+    const action = burgerSlice.actions.moveUp({
+      index: 1
+    });
+
+    // Act
+    const state = burgerSlice.reducer(initialStateWithIngredients, action);
+
+    // Assert
+    expect(state.ingredients[0]).toEqual(
+      initialStateWithIngredients.ingredients[1]
+    );
+  });
 });
