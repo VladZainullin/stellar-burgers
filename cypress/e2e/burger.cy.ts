@@ -1,3 +1,5 @@
+import * as orderFixture from '../fixtures/order.json';
+
 describe('Тестирование страницы конструктора бургеров', () => {
   beforeEach(() => {
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients' });
@@ -53,8 +55,42 @@ describe('Тестирование страницы конструктора б�
     });
   });
 
-  afterEach(() => {
-    cy.clearCookie('accessToken');
-    localStorage.removeItem('refreshToken');
+  describe('Тестирование создания заказа пользователем', () => {
+    beforeEach('Добавление фейковых OIDC токенов', () => {
+      cy.setCookie('accessToken', 'EXAMPLE_ACCESS_TOKEN');
+      localStorage.setItem('refreshToken', 'EXAMPLE_REFRESH_TOKEN');
+    });
+
+    beforeEach('Мокирование данных для создания заказа', () => {
+      cy.intercept('GET', 'api/auth/user', { fixture: 'user' });
+      cy.intercept('POST', 'api/orders', { fixture: 'order' });
+      cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients' });
+
+      cy.visit('/');
+    });
+
+    it('Тестирование создание заказа пользователем', () => {
+      cy.get('[data-create-order-button]').should('be.disabled');
+      cy.get('[data-ingredient-type="bun"]:first-of-type button').click();
+      cy.get('[data-create-order-button]').should('be.disabled');
+      cy.get('[data-ingredient-type="main"]:first-of-type button').click();
+      cy.get('[data-create-order-button]').should('be.enabled');
+
+      cy.get('[data-create-order-button]').click();
+
+      cy.get('#modals').children().should('have.length', 2);
+
+      cy.get('#modals h2:first-of-type').should(
+        'have.text',
+        orderFixture.order.number
+      );
+
+      cy.get('[data-create-order-button]').should('be.disabled');
+    });
+
+    afterEach('Удаление фейковых OIDC токенов', () => {
+      cy.clearCookie('accessToken');
+      localStorage.removeItem('refreshToken');
+    });
   });
 });
