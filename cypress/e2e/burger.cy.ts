@@ -1,7 +1,7 @@
 import * as orderFixture from '../fixtures/order.json';
 
 describe('Тестирование страницы конструктора бургеров', () => {
-  beforeEach(() => {
+  beforeEach('Мокирование запроса получения списка ингредиентов', () => {
     cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients' });
     cy.visit('/');
   });
@@ -64,7 +64,6 @@ describe('Тестирование страницы конструктора б�
     beforeEach('Мокирование данных для создания заказа', () => {
       cy.intercept('GET', 'api/auth/user', { fixture: 'user' });
       cy.intercept('POST', 'api/orders', { fixture: 'order' });
-      cy.intercept('GET', 'api/ingredients', { fixture: 'ingredients' });
 
       cy.visit('/');
     });
