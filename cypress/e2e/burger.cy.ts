@@ -6,10 +6,6 @@ describe('Тестирование страницы конструктора б�
     cy.visit('/');
   });
 
-  it('Тестирование доступности приложения', () => {
-    cy.visit('http://localhost:4000');
-  });
-
   it('Тестирование доступности списка ингредиентов для выбора', () => {
     cy.get('[data-ingredient-type="bun"]').should('have.length.at.least', 1);
     cy.get(
