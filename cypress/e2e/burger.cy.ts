@@ -71,22 +71,79 @@ describe('Тестирование страницы конструктора б�
     });
 
     it('Тестирование создание заказа пользователем', () => {
-      cy.get('[data-create-order-button]').should('be.disabled');
-      cy.get('[data-ingredient-type="bun"]:first-of-type button').click();
-      cy.get('[data-create-order-button]').should('be.disabled');
-      cy.get('[data-ingredient-type="main"]:first-of-type button').click();
-      cy.get('[data-create-order-button]').should('be.enabled');
+      cy.get('[data-cy="burger-constructor-bun-top"]').should(
+        'contain.text',
+        'Выберите булки'
+      );
+      cy.get(
+        '[data-cy="burger-constructor-list-ingredients"] .text_type_main-default'
+      ).should('contain.text', 'Выберите начинку');
+      cy.get('[data-cy="burger-constructor-bun-bottom"]').should(
+        'contain.text',
+        'Выберите булки'
+      );
+      cy.get('[data-cy="create-order-button"]').should('have.attr', 'disabled');
 
-      cy.get('[data-create-order-button]').click();
+      cy.get('[data-ingredient-type="bun"]:first-of-type').as('bun');
+      cy.get('@bun').find('button').click();
+      cy.get('@bun')
+        .invoke('attr', 'data-ingredient-id')
+        .then((ingredientId) => {
+          cy.get('[data-cy="burger-constructor-bun-top"]')
+            .invoke('attr', 'data-ingredient-id')
+            .should('eq', ingredientId);
 
-      cy.get('#modals').children().should('have.length', 2);
+          cy.get('[data-cy="burger-constructor-bun-bottom"]')
+            .invoke('attr', 'data-ingredient-id')
+            .should('eq', ingredientId);
+        });
 
-      cy.get('#modals h2:first-of-type').should(
-        'have.text',
-        orderFixture.order.number
+      cy.get('[data-ingredient-type="main"]:first-of-type').as('main');
+      cy.get('@main').find('button').click();
+      cy.get('@main')
+        .invoke('attr', 'data-ingredient-id')
+        .then((ingredientId) => {
+          cy.get('[data-cy="burger-constructor-list-ingredients"]')
+            .find('li:first-of-type')
+            .invoke('attr', 'data-ingredient-id')
+            .should('eq', ingredientId);
+        });
+      cy.get('[data-cy="create-order-button"]').should(
+        'not.have.attr',
+        'disabled'
       );
 
-      cy.get('[data-create-order-button]').should('be.disabled');
+      cy.get('[data-ingredient-type="sauce"]:first-of-type').as('sauce');
+      cy.get('@sauce').find('button').click();
+      cy.get('@sauce')
+        .invoke('attr', 'data-ingredient-id')
+        .then((ingredientId) => {
+          cy.get('[data-cy="burger-constructor-list-ingredients"]')
+            .find('li:last-of-type')
+            .invoke('attr', 'data-ingredient-id')
+            .should('eq', ingredientId);
+        });
+
+      cy.get('[data-cy="create-order-button"]').click();
+
+      cy.get('#modals')
+        .find('h2')
+        .should('contain.text', orderFixture.order.number);
+
+      cy.get('#modals').find('button');
+
+      cy.get('[data-cy="burger-constructor-bun-top"]').should(
+        'contain.text',
+        'Выберите булки'
+      );
+      cy.get(
+        '[data-cy="burger-constructor-list-ingredients"] .text_type_main-default'
+      ).should('contain.text', 'Выберите начинку');
+      cy.get('[data-cy="burger-constructor-bun-bottom"]').should(
+        'contain.text',
+        'Выберите булки'
+      );
+      cy.get('[data-cy="create-order-button"]').should('have.attr', 'disabled');
     });
 
     afterEach('Удаление фейковых OIDC токенов', () => {
