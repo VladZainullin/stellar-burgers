@@ -31,21 +31,18 @@ describe('Тестирование страницы конструктора б�
       it('Тестирование закрытия модального окна по кнопке закрыть', () => {
         cy.get('[data-ingredient-type="bun"]:first-of-type').click();
         cy.get('#modals button:first-of-type').click();
-        cy.wait(1000);
         cy.get('#modals').children().should('have.length', 0);
       });
 
       it('Тестирование закрытия модального окна по клику на оверлей', () => {
         cy.get('[data-ingredient-type="bun"]:first-of-type').click();
         cy.get('#modals>div:nth-of-type(2)').click({ force: true });
-        cy.wait(1000);
         cy.get('#modals').children().should('have.length', 0);
       });
 
       it('Тестирование закрытия модального окна при нажатии клавиши "esc"', () => {
         cy.get('[data-ingredient-type="bun"]:first-of-type').click();
         cy.get('body').type('{esc}');
-        cy.wait(1000);
         cy.get('#modals').children().should('have.length', 0);
       });
     });
