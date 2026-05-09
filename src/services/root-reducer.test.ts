@@ -1,11 +1,20 @@
-import store, { rootReducer } from './store';
+import { rootReducer, RootState } from './store';
+import { initialState as userInitialState } from './slices/user';
+import { initialState as ingredientsInitialState } from './slices/ingredients';
+import { initialState as feedsInitialState } from './slices/feeds';
+import { initialState as burgerFeedsInitialState } from './slices/burger';
 
 describe('Тестирование корневого reducer', () => {
   test('Тестирование применение невалидного экшена к корневому reducer', () => {
     // Arrange
-    const initialState = store.getState();
+    const initialState: RootState = {
+      user: userInitialState,
+      ingredients: ingredientsInitialState,
+      feeds: feedsInitialState,
+      burger: burgerFeedsInitialState
+    };
     const action = {
-      type: 'TEST_ACTION'
+      type: 'UNKNOWN_ACTION'
     };
 
     // Act
