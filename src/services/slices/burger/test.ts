@@ -39,7 +39,7 @@ describe('Тестирование слайса конструктора бур�
 
   test('Тестирование функции изменения начинки бургера', () => {
     // Arrange
-    const bun: TConstructorIngredient = {
+    const main: TConstructorIngredient = {
       id: '844a6105c3D7580216fa083c',
       _id: '844a6105c3D7580216fa083c',
       name: 'Татарская начинка',
@@ -53,7 +53,7 @@ describe('Тестирование слайса конструктора бур�
       image_mobile: 'https://code.s3.yandex.net/react/code/bun-01-mobile.png',
       image_large: 'https://code.s3.yandex.net/react/code/bun-01-large.png'
     };
-    const action = burgerSlice.actions.add(bun);
+    const action = burgerSlice.actions.add(main);
 
     // Act
     const state = burgerSlice.reducer(initialState, action);
@@ -61,7 +61,7 @@ describe('Тестирование слайса конструктора бур�
     // Assert
     expect(state.bun).toBeNull();
     expect(state.ingredients).toHaveLength(1);
-    expect(state.ingredients[0]).toEqual(bun);
+    expect(state.ingredients[0]).toEqual(main);
   });
 
   test('Тестирование удаления начинки из бургера', () => {
