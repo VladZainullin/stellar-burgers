@@ -9,6 +9,7 @@ import userSlice, {
   updateUserThunk
 } from './index';
 import { TOrder, TUser } from '@utils-types';
+import { IUserState } from './type';
 
 const registerDataMock: TRegisterData = {
   email: 'user',
@@ -135,9 +136,16 @@ describe('Тестирование слайса пользователя', () =>
     test('В состоянии <Fullfilled>', () => {
       // Arrange
       const action = logoutThunk.fulfilled(undefined, '');
+      const initialStateWithUser: IUserState = {
+        ...initialState,
+        user: {
+          name: 'user',
+          email: 'user@yandex.ru'
+        }
+      };
 
       // Act
-      const state = userSlice.reducer(initialState, action);
+      const state = userSlice.reducer(initialStateWithUser, action);
 
       // Assert
       expect(state.logoutLoading).toBe(false);
