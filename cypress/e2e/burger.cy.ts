@@ -71,29 +71,30 @@ describe('Тестирование страницы конструктора б�
     });
 
     it('Тестирование создание заказа пользователем', () => {
-      cy.get('[data-cy="burger-constructor-bun-top"]').should(
-        'contain.text',
-        'Выберите булки'
+      cy.get('[data-cy="burger-constructor-bun-top"]').as('bun-top');
+      cy.get('[data-cy="burger-constructor-list-ingredients"]').as(
+        'ingredients-list'
       );
-      cy.get(
-        '[data-cy="burger-constructor-list-ingredients"] .text_type_main-default'
-      ).should('contain.text', 'Выберите начинку');
-      cy.get('[data-cy="burger-constructor-bun-bottom"]').should(
-        'contain.text',
-        'Выберите булки'
-      );
-      cy.get('[data-cy="create-order-button"]').should('have.attr', 'disabled');
+      cy.get('[data-cy="burger-constructor-bun-bottom"]').as('bun-bottom');
+      cy.get('[data-cy="create-order-button"]').as('create-order-button');
+
+      cy.get('@bun-top').should('contain.text', 'Выберите булки');
+      cy.get('@ingredients-list')
+        .find('.text_type_main-default')
+        .should('contain.text', 'Выберите начинку');
+      cy.get('@bun-bottom').should('contain.text', 'Выберите булки');
+      cy.get('@create-order-button').should('have.attr', 'disabled');
 
       cy.get('[data-ingredient-type="bun"]:first-of-type').as('bun');
       cy.get('@bun').find('button').click();
       cy.get('@bun')
         .invoke('attr', 'data-ingredient-id')
         .then((ingredientId) => {
-          cy.get('[data-cy="burger-constructor-bun-top"]')
+          cy.get('@bun-top')
             .invoke('attr', 'data-ingredient-id')
             .should('eq', ingredientId);
 
-          cy.get('[data-cy="burger-constructor-bun-bottom"]')
+          cy.get('@bun-bottom')
             .invoke('attr', 'data-ingredient-id')
             .should('eq', ingredientId);
         });
@@ -103,28 +104,25 @@ describe('Тестирование страницы конструктора б�
       cy.get('@main')
         .invoke('attr', 'data-ingredient-id')
         .then((ingredientId) => {
-          cy.get('[data-cy="burger-constructor-list-ingredients"]')
+          cy.get('@ingredients-list')
             .find('li:first-of-type')
             .invoke('attr', 'data-ingredient-id')
             .should('eq', ingredientId);
         });
-      cy.get('[data-cy="create-order-button"]').should(
-        'not.have.attr',
-        'disabled'
-      );
+      cy.get('@create-order-button').should('not.have.attr', 'disabled');
 
       cy.get('[data-ingredient-type="sauce"]:first-of-type').as('sauce');
       cy.get('@sauce').find('button').click();
       cy.get('@sauce')
         .invoke('attr', 'data-ingredient-id')
         .then((ingredientId) => {
-          cy.get('[data-cy="burger-constructor-list-ingredients"]')
+          cy.get('@ingredients-list')
             .find('li:last-of-type')
             .invoke('attr', 'data-ingredient-id')
             .should('eq', ingredientId);
         });
 
-      cy.get('[data-cy="create-order-button"]').click();
+      cy.get('@create-order-button').click();
 
       cy.get('#modals')
         .find('h2')
@@ -132,18 +130,12 @@ describe('Тестирование страницы конструктора б�
 
       cy.get('#modals').find('button');
 
-      cy.get('[data-cy="burger-constructor-bun-top"]').should(
-        'contain.text',
-        'Выберите булки'
-      );
-      cy.get(
-        '[data-cy="burger-constructor-list-ingredients"] .text_type_main-default'
-      ).should('contain.text', 'Выберите начинку');
-      cy.get('[data-cy="burger-constructor-bun-bottom"]').should(
-        'contain.text',
-        'Выберите булки'
-      );
-      cy.get('[data-cy="create-order-button"]').should('have.attr', 'disabled');
+      cy.get('@bun-top').should('contain.text', 'Выберите булки');
+      cy.get('@ingredients-list')
+        .find('.text_type_main-default')
+        .should('contain.text', 'Выберите начинку');
+      cy.get('@bun-bottom').should('contain.text', 'Выберите булки');
+      cy.get('@create-order-button').should('have.attr', 'disabled');
     });
 
     afterEach('Удаление фейковых OIDC токенов', () => {
