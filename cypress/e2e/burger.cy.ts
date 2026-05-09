@@ -16,8 +16,17 @@ describe('Тестирование страницы конструктора б�
   describe('Тестирование работы модальных окон описаний ингредиентов', () => {
     describe('Тестирование открытия модальных окон', () => {
       it('Тестирование открытие по карточке ингредиента', () => {
-        cy.get('[data-ingredient-type="bun"]:first-of-type').click();
-        cy.get('#modals').children().should('have.length', 2);
+        cy.get('[data-ingredient-type="bun"]:first-of-type')
+          .invoke('attr', 'data-ingredient-id')
+          .then((ingredientId) => {
+            cy.get('[data-ingredient-type="bun"]:first-of-type').click();
+
+            cy.get('#modals [data-ingredient-id]').should(
+              'have.attr',
+              'data-ingredient-id',
+              ingredientId
+            );
+          });
       });
 
       it('Тестирования модального окна после перезагрузки страницы', () => {
