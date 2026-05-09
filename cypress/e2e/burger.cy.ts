@@ -45,7 +45,7 @@ describe('Тестирование страницы конструктора б�
 
       it('Тестирование закрытия модального окна по клику на оверлей', () => {
         cy.get('[data-ingredient-type="bun"]:first-of-type').click();
-        cy.get('#modals>div:nth-of-type(2)').click({ force: true });
+        cy.get('#modals [data-cy="modal-overlay"]').click({ force: true });
         cy.get('#modals').children().should('have.length', 0);
       });
 
